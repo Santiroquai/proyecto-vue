@@ -4,13 +4,13 @@
         <Form @submit="onSubmit" :validation-schema="schema" >
             <div class="form-group">
                 <label>Nombre:</label>
-                <Field name="nombre" type="text" class="form-control" />
+                <Field v-model="nombre" type="text" name="nombre" class="form-control" />
                 <ErrorMessage name="nombre" class="error-message" />
             </div>
 
             <div class="form-group">
                 <label>Email:</label>
-                <Field name="email" type="email" class="form-control" />
+                <Field v-model="email" type="email" name="email" class="form-control" />
                 <ErrorMessage name="email" class="error-message" />
             </div>
 
@@ -21,12 +21,19 @@
 
 
 <script setup>
-import { Form, Field, ErrorMessage } from 'vee-validate';
-import { schema } from '../schemas/validationSchema';
+import {Form, Field, ErrorMessage} from 'vee-validate';
+import {schema} from '../schemas/validationSchema';
+import {useRegistrarStore} from '../stores/registrarStore';
+import {ref} from 'vue';
+ 
+const registrarStore = useRegistrarStore();
+
+const nombre = ref('');
+const email = ref('');
 
 const onSubmit = (values) => {
-    console.log('Formulario enviado:', values);
-  // Aquí tu lógica de registro
+    registrarStore.guardarRegistro(values.nombre, values.email);
+    console.log('Datos guardados en Pinia:', registrarStore.nombre, registrarStore.email);
 };
 </script>
 
